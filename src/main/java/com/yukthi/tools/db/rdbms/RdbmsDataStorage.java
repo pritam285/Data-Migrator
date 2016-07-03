@@ -83,7 +83,7 @@ public class RdbmsDataStorage implements IDataStorage
 		{
 			throw new MigrationException("Error occured while creating statement from connection", ex);
 		}
-
+		
 		for(TableInfo tableInfo : tableInfoList)
 		{
 			createQuery = new StringBuilder("CREATE TABLE ");
@@ -179,7 +179,7 @@ public class RdbmsDataStorage implements IDataStorage
 			}
 
 			createQuery.append(") CHARACTER SET = 'LATIN1'");
-
+			
 			try
 			{
 				statement.execute(createQuery.toString());
@@ -190,6 +190,9 @@ public class RdbmsDataStorage implements IDataStorage
 					// if any exception occurs while creating tables all the created
 					// tables will be rolled back
 					connection.rollback();
+					
+					throw new MigrationException("Error occured while creating tabale, " + tableName, e);
+					
 				} catch(SQLException ex)
 				{
 					throw new MigrationException("Error occured while rolling back the records", ex);

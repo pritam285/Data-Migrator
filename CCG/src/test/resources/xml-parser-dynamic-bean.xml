@@ -1,0 +1,8 @@
+<test xmlns:ccg="/fw/ccg/XMLBeanParser">
+	<data attr1="val1" attr2="val2">
+		<node1>node-val1</node1>
+		<node2>node-val2</node2>
+		<node3 ccg:beanType="com.yukthi.test.TestDataBean" intVal="100">
+		</node3>
+	</data>
+</test>
