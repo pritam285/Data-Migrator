@@ -189,4 +189,9 @@ public class Column implements Serializable
 	{
 		return autoIncrement;
 	}
+
+	public Boolean getAutoIncrement() 
+	{
+		return autoIncrement;
+	}
 }

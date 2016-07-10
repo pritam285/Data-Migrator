@@ -49,12 +49,112 @@
 		</#function>
 		
 	]]></template>	
-
+	
 	<template name="createTableTemplate"><![CDATA[
+		
+		<#assign comma>,</#assign>
+		
+		<#assign flag>true</#assign>
+		
 		CREATE TABLE ${tableInfo.tableName}
 		(
 			<#list tableInfo.columnList as column>
-				<@trim><#assign columnType>${column.columnTypeName}</#assign>
+			
+				<#if flag == "false">
+					${comma}
+				</#if>
+				
+				<#assign columnTypeName>${column.columnTypeName}</#assign>
+				
+				${column.name} ${columnTypeName} 
+				
+				<#if columnTypeName == "VARCHAR">
+					<#assign length="(${column.length?c})">
+					${length}
+				</#if>
+				
+				<#list tableInfo.pkColumnNameList as primaryName>
+						<#if primaryName == column.name>
+						PRIMARY KEY
+						</#if>
+				</#list>
+				
+				<#if column.nullable == false>
+				NOT NULL
+				</#if>				
+				
+				<#if column.autoIncrement == true>
+				AUTO_INCREMENT
+				</#if>
+								
+				<#assign flag>false</#assign>
+			</#list>
+			
+			
+			<#assign map= tableInfo.constraintNamUKColNamMap/>
+				
+			<#list map?keys as key>
+				
+				<#assign flag>true</#assign>
+									
+				,CONSTRAINT ${key} UNIQUE(
+					<#assign colNameList = map[key]>
+					
+					<#list colNameList as colName>
+						<#if flag == "false">
+							${comma}
+						</#if>
+						
+						${colName}
+						
+						<#assign flag>false</#assign>					
+					</#list> 
+				)
+			</#list>
+			
+			<#assign map= tableInfo.fkColNamPrntMap/>
+				
+			<#list map?keys as key>
+				
+				<#assign conPrntArr = map[key]>
+				
+				,CONSTRAINT ${conPrntArr[0]} FOREIGN KEY ( ${key} ) REFERENCES  ${conPrntArr[1]} (ID)
+			</#list>
+			
+		)CHARACTER SET = 'LATIN1'
+	]]></template>
+
+	<template name="insertRecordsTemplate"><![CDATA[
+		
+		<#assign flag=true/>
+		
+		<#assign comma>,</#assign>
+		
+		INSERT INTO ${tableRow.tableName} VALUES (
+		
+		<#list tableRow.rowValues as value>
+			
+			<#if flag == false>
+				${comma}
+			</#if>
+			
+			<#if value??>
+				${value?string}
+				<#else>
+				0
+			</#if> 
+			
+			<#assign flag=false/>
+		</#list> 
+		)	
+	]]></template>
+	
+	
+	<template name="createTableTemplate1"><![CDATA[
+		CREATE TABLE ${query.tableName}
+		(
+			<#list query.tableStructure.columns as column>
+				<@trim><#assign columnType>${column.typeName}</#assign>
 				
 				<#if columnType == "STRING">
 					<#assign dataType="VARCHAR(${column.length?c})">
@@ -73,7 +173,7 @@
 				<#elseif columnType == "BLOB">
 					<#assign dataType="LONGBLOB">
 				<#else>
-					<#assign dataType>${column.columnTypeName}</#assign>
+					<#assign dataType>${column.typeName}</#assign>
 				</#if>
 				
 				<#if column.idField>

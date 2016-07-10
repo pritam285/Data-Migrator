@@ -364,7 +364,6 @@ public class RdbmsDataSource implements IDataSource
 					column.setLength(resultSet.getInt("COLUMN_SIZE"));
 					column.setName(resultSet.getString("COLUMN_NAME"));
 					column.setType(resultSet.getInt("DATA_TYPE"));
-					// column.setPrecision(0);
 					column.setNullable(resultSet.getBoolean("IS_NULLABLE"));
 					column.setAutoIncrement(resultSet.getBoolean("IS_AUTOINCREMENT"));
 					column.setColumnTypeName(resultSet.getString("TYPE_NAME"));

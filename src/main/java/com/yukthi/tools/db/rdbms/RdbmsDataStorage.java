@@ -191,7 +191,7 @@ public class RdbmsDataStorage implements IDataStorage
 					// tables will be rolled back
 					connection.rollback();
 					
-					throw new MigrationException("Error occured while creating tabale, " + tableName, e);
+					throw new MigrationException("Error occured while creating table, " + tableName, e);
 					
 				} catch(SQLException ex)
 				{

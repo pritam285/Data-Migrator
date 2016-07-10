@@ -18,6 +18,8 @@ import freemarker.template.TemplateException;
 public class RdbmsConfiguration 
 {
 	public static String CREATE_QUERY = "createTableTemplate";
+
+	public static String INSERT_QUERY = "insertRecordsTemplate";
 	
 	private Configuration configuration = new Configuration();
 	

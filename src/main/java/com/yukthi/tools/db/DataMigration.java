@@ -57,7 +57,8 @@ public class DataMigration
 		{
 			throw new IllegalArgumentException("Please follow the proper format: 'source.type = data' in properties file");
 		}
-		
+
+		sourceType = sourceType.trim();
 		Class<IDataSource> clsSource = (Class<IDataSource>) Class.forName(sourceType);
 		Constructor<IDataSource> consSource = clsSource.getConstructor(Properties.class);
 		IDataSource iDataSource = consSource.newInstance(propertiesSource);
@@ -72,6 +73,7 @@ public class DataMigration
 			throw new IllegalArgumentException("Please follow the proper format: 'storage.type = data' in properties file");
 		}
 		
+		storageType = storageType.trim();
 		Class<IDataStorage> clsStorage = (Class<IDataStorage>) Class.forName(storageType);
 		Constructor<IDataStorage> consStorage = clsStorage.getConstructor(Properties.class);
 		IDataStorage iDataStorage = consStorage.newInstance(propertiesStorage);
