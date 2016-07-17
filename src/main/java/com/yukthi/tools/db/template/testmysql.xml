@@ -52,18 +52,15 @@
 	
 	<template name="createTableTemplate"><![CDATA[
 		
-		<#assign comma>,</#assign>
-		
-		<#assign flag>true</#assign>
+		<#assign comma=",">
+		<#assign flag=true>
 		
 		CREATE TABLE ${tableInfo.tableName}
 		(
 			<#list tableInfo.columnList as column>
-			
-				<#if flag == "false">
+				<#if flag == false>
 					${comma}
 				</#if>
-				
 				<#assign columnTypeName>${column.columnTypeName}</#assign>
 				
 				${column.name} ${columnTypeName} 
@@ -80,34 +77,32 @@
 				</#list>
 				
 				<#if column.nullable == false>
-				NOT NULL
+					NOT NULL
 				</#if>				
 				
 				<#if column.autoIncrement == true>
-				AUTO_INCREMENT
+					AUTO_INCREMENT
 				</#if>
 								
-				<#assign flag>false</#assign>
+				<#assign flag=false>
 			</#list>
-			
 			
 			<#assign map= tableInfo.constraintNamUKColNamMap/>
 				
 			<#list map?keys as key>
 				
-				<#assign flag>true</#assign>
+				<#assign flag=true>
 									
 				,CONSTRAINT ${key} UNIQUE(
 					<#assign colNameList = map[key]>
 					
 					<#list colNameList as colName>
-						<#if flag == "false">
+						<#if flag == false>
 							${comma}
 						</#if>
 						
 						${colName}
-						
-						<#assign flag>false</#assign>					
+						<#assign flag=false>					
 					</#list> 
 				)
 			</#list>
@@ -138,11 +133,7 @@
 				${comma}
 			</#if>
 			
-			<#if value??>
-				${value?string}
-				<#else>
-				0
-			</#if> 
+			? 
 			
 			<#assign flag=false/>
 		</#list> 
